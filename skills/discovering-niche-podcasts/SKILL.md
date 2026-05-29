@@ -1,6 +1,6 @@
 ---
 name: discovering-niche-podcasts
-description: "Discover niche/industry podcasts and podcast owners for LinkedIn outreach using pasted reports, Perplexity, Exa, Tavily, and optional assisted Genspark workflows. Use when a user provides a niche and wants relevant podcasts, hosts, owners, channels, RSS feeds, and outreach-ready owner prospects."
+description: "Discover niche/industry podcasts, podcast owners, interview episode sources, and guest/interviewee LinkedIn outreach lists using pasted reports, Perplexity, Exa, Tavily, and optional assisted Genspark workflows. Use when a user provides a niche and wants relevant podcasts plus owners and guests enriched for LinkedIn connection."
 ---
 
 # discovering-niche-podcasts
@@ -8,9 +8,11 @@ description: "Discover niche/industry podcasts and podcast owners for LinkedIn o
 ## Workflow
 1. Confirm the campaign niche, source list, or input file.
 2. Read `references/setup.md` if the repo is not configured.
-3. Use deterministic scripts before manual research.
-4. Write descriptive outputs under `data/` or `.tmp/`.
-5. Preserve evidence and candidate fields for review.
+3. Prompt for the minimum intake fields: niche, audience/ICP, optional seed terms, geography, must-include terms, and exclusions.
+4. Run the Apify SERP waterfall first with `scripts/run_podcast_intelligence_waterfall.py`.
+5. Use YouTube/RSS/transcript/OCR fallback scripts only for high-value shows whose guest names remain missing.
+6. Match both hosts/owners and interviewees to LinkedIn with evidence fields.
+7. Write descriptive outputs under `data/` or `.tmp/`.
 
 ## Scripts
 - `scripts/discover_podcasts.py`
@@ -22,6 +24,15 @@ description: "Discover niche/industry podcasts and podcast owners for LinkedIn o
 - `scripts/transcribe_audio_episodes.py`
 - `scripts/ocr_thumbnails.py`
 - `scripts/genspark_assisted.py`
+- `scripts/extract_youtube_urls_from_report.py`
+- `scripts/build_interviewee_linkedin_list.py`
+- `scripts/apify_serp.py`
+- `scripts/discover_podcast_interviews_serp.py`
+- `scripts/enrich_linkedin_via_apify_serp.py`
+- `scripts/run_podcast_intelligence_waterfall.py`
+
+## References
+- `references/research-report-workflows.md` for turning pasted reports into podcast, episode, and LinkedIn enrichment outputs.
 
 ## Guardrails
 - Never hardcode API keys.

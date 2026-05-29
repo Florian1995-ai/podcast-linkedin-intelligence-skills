@@ -22,6 +22,10 @@ description: "Resolve podcast names, websites, Spotify, Apple, or RSS feeds to l
 - `scripts/transcribe_audio_episodes.py`
 - `scripts/ocr_thumbnails.py`
 - `scripts/genspark_assisted.py`
+- `scripts/extract_youtube_urls_from_report.py`
+
+## References
+- `references/research-report-workflows.md` for turning pasted reports into podcast, episode, and LinkedIn enrichment outputs.
 
 ## Guardrails
 - Never hardcode API keys.

@@ -26,5 +26,5 @@ def extract_guest_names(text, known_hosts=None):
             if is_likely_person_name(name,known_hosts) and name not in found: found.append(name)
     return found
 def classify_report_source(text):
-    low=(text or '').lower(); g=sum(1 for m in ['genspark','sparkpage','super agent','sources:','research report'] if m in low); p=sum(1 for m in ['perplexity','sonar','citations','related questions'] if m in low)
+    low=(text or '').lower(); g=sum(1 for m in ['genspark','sparkpage','super agent','using tool','parallel search','parallel read','video search','write file','read file','bash command','download file','research report'] if m in low); p=sum(1 for m in ['perplexity','sonar','citations','related questions'] if m in low)
     return 'genspark' if g>p else 'perplexity' if p>g else 'unknown'
