@@ -33,4 +33,7 @@ def apify_run_sync(actor_id, payload, token=None):
     if not token: raise RuntimeError('No APIFY_API_TOKEN found')
     actor=actor_id.replace('/','~')
     r=requests.post(f'https://api.apify.com/v2/acts/{actor}/run-sync-get-dataset-items',params={'token':token},json=payload,timeout=300)
-    r.raise_for_status(); data=r.json(); return data if isinstance(data,list) else []
+    if not r.ok:
+        msg=(r.text or '')[:500].replace(token,'[REDACTED]')
+        raise RuntimeError(f'Apify actor {actor_id} failed with HTTP {r.status_code}: {msg}')
+    data=r.json(); return data if isinstance(data,list) else []

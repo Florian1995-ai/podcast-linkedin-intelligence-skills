@@ -51,7 +51,7 @@ def apify_serp_search(queries: list[str], max_pages_per_query: int = 1, results_
     load_env()
     actor = actor_id or os.getenv("APIFY_SERP_ACTOR", "apify/google-search-scraper")
     payload = {
-        "queries": queries,
+        "queries": "\n".join(queries),
         "maxPagesPerQuery": max_pages_per_query,
         "resultsPerPage": results_per_page,
         "csvFriendlyOutput": False,

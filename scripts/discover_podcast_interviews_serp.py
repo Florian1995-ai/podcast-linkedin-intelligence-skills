@@ -11,17 +11,37 @@ FIELDS = ["podcast_or_series", "episode_title", "guest_or_speaker", "episode_url
 
 
 def niche_queries(niche: str, audience: str = "", seed_terms: str = "") -> list[str]:
-    target = " ".join(part for part in [niche, audience, seed_terms] if part).strip()
-    return [
-        f'"{target}" podcast interview',
-        f'"{target}" podcast "with"',
-        f'"{target}" "interview with" podcast',
-        f'"{target}" "guest" "podcast"',
-        f'site:youtube.com/watch "{target}" podcast interview',
-        f'site:podcasts.apple.com "{target}" podcast "with"',
-        f'site:spotify.com/episode "{target}" podcast',
-        f'site:podcastaddict.com "{target}" "episode"',
-    ]
+    seeds = [niche]
+    if audience:
+        seeds.append(audience)
+    if seed_terms:
+        seeds.extend([part.strip() for part in re.split(r"[,;]", seed_terms) if part.strip()])
+    compact = []
+    seen = set()
+    for seed in seeds:
+        seed = re.sub(r"\s+", " ", seed).strip()
+        if seed and seed.lower() not in seen:
+            seen.add(seed.lower())
+            compact.append(seed)
+    queries = []
+    for target in compact[:8]:
+        queries.extend(
+            [
+                f'"{target}" podcast interview',
+                f'"{target}" podcast "with"',
+                f'"{target}" "interview with" podcast',
+            ]
+        )
+    primary = compact[0] if compact else niche
+    queries.extend(
+        [
+            f'site:youtube.com/watch "{primary}" podcast interview',
+            f'site:podcasts.apple.com "{primary}" podcast "with"',
+            f'site:spotify.com/episode "{primary}" podcast',
+            f'site:podcastaddict.com "{primary}" "episode"',
+        ]
+    )
+    return queries
 
 
 def looks_like_episode(row: dict, niche: str) -> bool:
