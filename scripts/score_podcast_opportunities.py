@@ -82,12 +82,17 @@ def score_row(row: dict) -> dict:
     }
 
 
+def is_real_episode_url(row: dict) -> bool:
+    url = row.get("episode_url", "").lower()
+    return bool(url) and "google.com/search" not in url
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Score discovered podcast/interview rows as guest-appearance opportunities.")
     parser.add_argument("--input", required=True)
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
-    rows = [score_row(row) for row in read_csv(args.input)]
+    rows = [score_row(row) for row in read_csv(args.input) if is_real_episode_url(row)]
     rows.sort(key=lambda item: int(item["opportunity_score"]), reverse=True)
     write_csv(args.output, rows, FIELDS)
     print(f"Rows written: {len(rows)} -> {args.output}")
